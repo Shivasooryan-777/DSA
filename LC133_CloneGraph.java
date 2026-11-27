@@ -4,39 +4,45 @@ import java.util.List;
 import java.util.Map;
 
 public class LC133_CloneGraph {
-    static class Node {
+
+    public static class Node {
         public int val;
         public List<Node> neighbors;
 
         public Node() {
             val = 0;
-            neighbors = new ArrayList<>();
+            neighbors = new ArrayList<Node>();
         }
 
-        public Node(int val) {
-            this.val = val;
-            neighbors = new ArrayList<>();
+        public Node(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node>();
+        }
+
+        public Node(int _val, ArrayList<Node> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
         }
     }
 
-    private Map<Node, Node> cloned = new HashMap<>();
+    private final Map<Node, Node> visited = new HashMap<>();
 
     public Node cloneGraph(Node node) {
         if (node == null) {
             return null;
         }
 
-        if (cloned.containsKey(node)) {
-            return cloned.get(node);
+        if (visited.containsKey(node)) {
+            return visited.get(node);
         }
 
-        Node copy = new Node(node.val);
-        cloned.put(node, copy);
+        Node clone = new Node(node.val);
+        visited.put(node, clone);
 
         for (Node neighbor : node.neighbors) {
-            copy.neighbors.add(cloneGraph(neighbor));
+            clone.neighbors.add(cloneGraph(neighbor));
         }
 
-        return copy;
+        return clone;
     }
 }
