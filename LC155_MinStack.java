@@ -1,31 +1,42 @@
-import java.util.Stack;
-
 public class LC155_MinStack {
-    private final Stack<Integer> stack = new Stack<>();
-    private final Stack<Integer> minStack = new Stack<>();
+
+    private static class Node {
+        int val;
+        int min;
+        Node next;
+
+        public Node(int val, int min, Node next) {
+            this.val = val;
+            this.min = min;
+            this.next = next;
+        }
+    }
+
+    private Node head;
 
     public LC155_MinStack() {
+        head = null;
     }
 
     public void push(int val) {
-        stack.push(val);
-        if (minStack.isEmpty() || val <= minStack.peek()) {
-            minStack.push(val);
+        if (head == null) {
+            head = new Node(val, val, null);
+        } else {
+            head = new Node(val, Math.min(val, head.min), head);
         }
     }
 
     public void pop() {
-        int removed = stack.pop();
-        if (removed == minStack.peek()) {
-            minStack.pop();
+        if (head != null) {
+            head = head.next;
         }
     }
 
     public int top() {
-        return stack.peek();
+        return head.val;
     }
 
     public int getMin() {
-        return minStack.peek();
+        return head.min;
     }
 }
